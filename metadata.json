@@ -1,0 +1,5 @@
+{
+  "name": "PDF Merge & Sort",
+  "description": "A simple, secure client-side tool to combine and reorder PDF files.",
+  "requestFramePermissions": []
+}
