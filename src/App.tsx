@@ -31,7 +31,8 @@ import {
   Lock,
   Scissors,
   LayoutGrid,
-  ExternalLink
+  Github,
+  Coffee
 } from 'lucide-react';
 import { mergePDFs } from './utils/pdf';
 import { PDFPreview } from './components/PDFPreview';
@@ -246,6 +247,18 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#f8f8f7] text-zinc-900 font-sans selection:bg-zinc-200 flex flex-col">
       <div className="max-w-4xl mx-auto w-full px-6 py-12 md:py-20 flex-grow">
+        <div className="flex justify-end items-center gap-2 md:gap-3 mb-6">
+          <a
+            href="https://github.com/nimaaksoy/pdf-tool"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:border-zinc-300 transition-colors"
+          >
+            <Github size={14} className="mr-1.5" />
+            GitHub
+          </a>
+        </div>
+
         
         <AnimatePresence mode="wait">
           {view === 'home' ? (
@@ -458,6 +471,15 @@ export default function App() {
             <p className="text-xs text-zinc-400 italic">
               All processing happens in your browser. Your files are never uploaded to a server.
             </p>
+            <a
+              href="https://buymeacoffee.com/nimaa"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 transition-colors"
+            >
+              <Coffee size={14} />
+              Buy me a coffee
+            </a>
           </div>
           
           <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-zinc-400">

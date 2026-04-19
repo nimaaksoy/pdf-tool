@@ -111,6 +111,11 @@ Issues and pull requests are welcome.
 
 If you plan major changes, open an issue first to discuss scope and design.
 
+## Support
+If this project helps you, you can support ongoing development:
+
+- Buy Me a Coffee: [https://buymeacoffee.com/nimaa](https://buymeacoffee.com/nimaa)
+
 ## License
 This project is licensed under the Apache License 2.0. See [LICENSE](./LICENSE).
 
