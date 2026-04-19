@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   DndContext, 
   closestCenter,
@@ -113,8 +113,35 @@ const SortablePDFItem = ({ id, pdfFile, onRemove }: SortableItemProps) => {
 
 type View = 'home' | 'merge';
 
+const SEO_CONFIG: Record<View, { title: string; description: string; path: string }> = {
+  home: {
+    title: 'PDF Tools | Fast, Private PDF Utilities',
+    description:
+      'Fast, private PDF tools in your browser. Merge PDF files instantly with drag-and-drop sorting and previews.',
+    path: '/',
+  },
+  merge: {
+    title: 'PDF Merge | Combine PDF Files Online Free',
+    description:
+      'Open PDF Merge on /pdf-merge to combine multiple PDF files in seconds with drag-and-drop reordering and previews.',
+    path: '/pdf-merge',
+  },
+};
+
+function getViewFromPath(pathname: string): View {
+  const normalized = pathname.replace(/\/+$/, '') || '/';
+  return normalized === '/pdf-merge' ? 'merge' : 'home';
+}
+
+function setMetaTag(selector: string, content: string) {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.setAttribute('content', content);
+  }
+}
+
 export default function App() {
-  const [view, setView] = useState<View>('home');
+  const [view, setView] = useState<View>(() => getViewFromPath(window.location.pathname));
   const [pdfFiles, setPdfFiles] = useState<PDFFile[]>([]);
   const [isMerging, setIsMerging] = useState(false);
 
@@ -180,6 +207,42 @@ export default function App() {
     setPdfFiles([]);
   };
 
+  const navigateToView = useCallback((nextView: View) => {
+    const nextPath = SEO_CONFIG[nextView].path;
+    if (window.location.pathname !== nextPath) {
+      window.history.pushState({}, '', nextPath);
+    }
+    setView(nextView);
+  }, []);
+
+  useEffect(() => {
+    const onPopState = () => {
+      setView(getViewFromPath(window.location.pathname));
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => {
+      window.removeEventListener('popstate', onPopState);
+    };
+  }, []);
+
+  useEffect(() => {
+    const seo = SEO_CONFIG[view];
+    const absoluteUrl = `https://pdf.nimaaksoy.com${seo.path}`;
+
+    document.title = seo.title;
+    setMetaTag('meta[name="description"]', seo.description);
+    setMetaTag('meta[property="og:title"]', seo.title);
+    setMetaTag('meta[property="og:description"]', seo.description);
+    setMetaTag('meta[property="og:url"]', absoluteUrl);
+    setMetaTag('meta[name="twitter:title"]', seo.title);
+    setMetaTag('meta[name="twitter:description"]', seo.description);
+
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', absoluteUrl);
+    }
+  }, [view]);
+
   return (
     <div className="min-h-screen bg-[#f8f8f7] text-zinc-900 font-sans selection:bg-zinc-200 flex flex-col">
       <div className="max-w-4xl mx-auto w-full px-6 py-12 md:py-20 flex-grow">
@@ -207,7 +270,7 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* PDF Merge Tool */}
                 <button 
-                  onClick={() => setView('merge')}
+                  onClick={() => navigateToView('merge')}
                   className="group relative p-8 bg-white border border-zinc-200 rounded-3xl text-left transition-all hover:border-zinc-400 hover:shadow-xl hover:-translate-y-1"
                 >
                   <div className="w-12 h-12 bg-zinc-900 text-white rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -258,7 +321,7 @@ export default function App() {
               <header className="flex items-end justify-between border-b border-zinc-200 pb-8">
                 <div className="space-y-4">
                   <button 
-                    onClick={() => setView('home')}
+                    onClick={() => navigateToView('home')}
                     className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors mb-4"
                   >
                     <ArrowLeft size={14} /> Back to Tools

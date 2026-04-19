@@ -53,7 +53,7 @@ npm run dev
 ```
 
 Default local URL:
-- `http://localhost:3000/pdfmerge/`
+- `http://localhost:3000/`
 
 ### Build for Production
 ```bash
@@ -84,8 +84,8 @@ src/
 ```
 
 ## Deployment Notes
-- Vite base path is configured as `/pdfmerge/` in [`vite.config.ts`](./vite.config.ts).
-- If deploying at root (`/`), update `base` accordingly.
+- Vite base path defaults to `/` (root-domain hosting) in [`vite.config.ts`](./vite.config.ts).
+- To deploy under a subpath, set `VITE_BASE_PATH` (example: `/pdfmerge/`) before building.
 
 ## Live Demo
 - Production: [https://pdf.nimaaksoy.com](https://pdf.nimaaksoy.com)

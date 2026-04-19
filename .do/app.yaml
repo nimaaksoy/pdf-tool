@@ -1,0 +1,12 @@
+name: pdf-tool
+static_sites:
+  - name: web
+    github:
+      repo: nimaaksoy/pdf-tool
+      branch: main
+      deploy_on_push: true
+    source_dir: /
+    build_command: npm ci && npm run build
+    output_dir: /dist
+    routes:
+      - path: /
